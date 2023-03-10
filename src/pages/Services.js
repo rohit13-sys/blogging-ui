@@ -1,3 +1,4 @@
+import { Input } from "reactstrap";
 import Base from "../components/Base";
 
 const Services = () => {

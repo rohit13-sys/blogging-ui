@@ -1,12 +1,16 @@
 import CustomNavbar from "./CustomNavbar";
+import { Container } from "reactstrap";
 
-const Base = ({ title = "Welcome to our website", children }) => {
+
+const Base = ({children }) => {
     return (
-        <div>
-            <CustomNavbar />
-            {children}
-            
-        </div>
+      <>
+       
+        
+          <CustomNavbar />
+
+        <div className="mt-100">{children}</div>
+      </>
     );
 
 };

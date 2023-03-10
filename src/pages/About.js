@@ -1,16 +1,16 @@
 import Base from "../components/Base";
 
-const About=()=>
-{
+const About = () => {
+    console.log("this is about page");
     return (
-        <div>
-            <Base>
+        
+        <Base>
             <h1>
-            this is about component after relosading
-                </h1>
-                </Base>
-        </div>
-    )
-}
+                this is about component after relosadingdfrsdc
+            </h1>
+        </Base>
+
+    );
+};
 
 export default About;
