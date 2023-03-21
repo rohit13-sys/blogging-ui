@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import {
   MDBContainer,
@@ -23,11 +23,13 @@ import { loginUser } from "../../services/user-service";
 import { toast } from "react-toastify";
 import { doLogin } from "../../auth";
 import { Link, useNavigate } from "react-router-dom";
+import userContext from "../../context/userContext";
 
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const userCtxData = useContext(userContext);
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -67,6 +69,11 @@ const Login = () => {
         doLogin(resp, () => {
           console.log("Login detail is saved to localstodage");
 
+
+          userCtxData.SetUser({
+            data: resp.user,
+            login:true
+          })
           //redirect to dashboard page
           navigate("/user/dashboard");
         });
@@ -97,7 +104,7 @@ const Login = () => {
           <MDBCol col="10" md="6">
             <img
               src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-              class="img-fluid"
+              className="img-fluid"
               alt="Not Found"
             />
           </MDBCol>
@@ -173,7 +180,8 @@ const Login = () => {
                   invalid={
                     error.errors?.response?.data?.password ? true : false
                   }
-                  size="lg"
+                  autoComplete="on"
+                  bsSize="lg"
                 />
                 <FormFeedback>
                   {error.errors.response?.data?.password}
@@ -214,8 +222,7 @@ const Login = () => {
                 </Button>
 
                 <p className="small fw-bold mt-2 pt-1 mb-2">
-                  Don't have an account?{" "}
-                  <Link to="/signup">SignUp</Link>
+                  Don't have an account? <Link to="/signup">SignUp</Link>
                 </p>
               </div>
             </Form>

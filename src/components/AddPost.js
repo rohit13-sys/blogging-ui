@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { doLogout, getCurrentUser } from "../auth";
 import { loadAllCategory } from "../services/category-service";
-import { addPost } from "../services/post-service";
+import { addPost, uploadPostImage } from "../services/post-service";
 import { toast } from "react-toastify";
 import jwtDecode from "jwt-decode";
 
@@ -26,14 +26,16 @@ const AddPost = () => {
   const [post, SetPost] = useState({
     title: "",
     content: "",
-    description:"",
+    description: "",
     categoryId: "",
   });
 
-  const [currentUser, SetCurrentUser] = useState("");
+  const [currentUser, SetCurrentUser] = useState(null);
+
+  const [image, SetImage] = useState();
 
   useEffect(() => {
-    SetCurrentUser(getCurrentUser());
+    SetCurrentUser(getCurrentUser())
     loadAllCategory()
       .then((resp) => {
         SetCategories(resp);
@@ -41,7 +43,6 @@ const AddPost = () => {
       .catch((error) => {
         toast.error("Something Wents Wrong!!!");
       });
-     
   }, []);
 
   // useEffect(() => {
@@ -71,6 +72,10 @@ const AddPost = () => {
     SetPost({ ...post, content: data });
   };
 
+  const handleFileChange = (event) => {
+    SetImage(event.target.files[0]);
+  };
+
   const createPost = (event) => {
     event.preventDefault();
 
@@ -84,12 +89,22 @@ const AddPost = () => {
       alert("Please Enter Post Category");
       return;
     } else if (post.description.trim() === "") {
-      alert("Please Enter Description!!")
+      alert("Please Enter Description!!");
     }
 
     post["userId"] = currentUser.id;
+
     addPost(post)
       .then((resp) => {
+        if (image && image.type != undefined) {
+          if (image.name.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+            uploadPostImage(resp.id, image).then((data) => {});
+          } else {
+            toast.error("Please upload proper Format Image");
+            return;
+          }
+        }
+
         toast.success("Post Added Successfully");
       })
       .catch((error) => {
@@ -102,7 +117,7 @@ const AddPost = () => {
       title: "",
       content: "",
       categoryId: "",
-      description:""
+      description: "",
     });
   };
   return (
@@ -132,7 +147,7 @@ const AddPost = () => {
                     placeholder="Enter Here"
                     onChange={fieldSet}
                     name="title"
-                    maxLength={'40'}
+                    maxLength={"40"}
                   />
                   <span className="text-muted">Max 40 characters</span>
                 </div>
@@ -163,6 +178,14 @@ const AddPost = () => {
                   />
                 </div>
               </FormGroup>
+
+              <FormGroup>
+                <div className="my-3">
+                  <Label for="image">Select Post Banner</Label>
+                  <Input type="file" id="image" onChange={handleFileChange} />
+                </div>
+              </FormGroup>
+
               <FormGroup>
                 <div className="my-3">
                   <Label for="category">Category</Label>

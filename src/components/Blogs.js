@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getAllPosts } from "../services/post-service";
+import { getAllPosts, loadPostsByCategory } from "../services/post-service";
 import Post from "./Post";
-import { MDBRow } from "mdb-react-ui-kit";
+import {Row} from "reactstrap";
 import {
   Pagination,
   PaginationItem,
@@ -9,9 +9,11 @@ import {
   Container,
 } from "reactstrap";
 import { toast } from "react-toastify";
+import { PAGE_SIZE } from "../services/helper";
+import InfiniteScroll from "react-infinite-scroll-component";
+import AnimatedCard from "../animated cards/AnimatedCard";
 
 const Blogs = () => {
-  var typedObj;
   const [postContent, SetPostContent] = useState({
     contents: [],
     totalPages: "",
@@ -21,45 +23,67 @@ const Blogs = () => {
     last: false,
   });
 
+  const [currentPage, SetCurrentPage] = useState(0);
   useEffect(() => {
-    // getAllPosts(0, 8)
-    //   .then((resp) => {
-    //     SetPostContent(resp);
-    //     console.log(postContent);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     toast.error("Some error occurred whike loading Posts");
-    //   });
-      pageChange()
-  }, []);
+    pageChange(currentPage);
+  }, [currentPage]);
 
-    const pageChange = (pageNumber = 0, pageSize = 8) => {
-         if (pageNumber < postContent.pageNumber && postContent.pageNumber==0) {
-           return;
-         }
-        if (pageNumber > postContent.pageNumber && postContent.last) {
-            return;
-        }
-    getAllPosts(pageNumber, pageSize)
-      .then((resp) => {
-        SetPostContent(resp);
-        window.scroll(0, 0);
-      })
-      .catch((error) => {
-        toast.error("Some error occurred whike loading Posts");
-      });
+  useEffect(() => {
+    pageChange(currentPage);
+  },[])
+  const pageChange = (pageNumber = 0, pageSize = PAGE_SIZE) => {
+    if (pageNumber < postContent.pageNumber && postContent.pageNumber == 0) {
+      return;
+    }
+    if (pageNumber > postContent?.pageNumber && postContent?.last) {
+      return;
+    }
+      getAllPosts(pageNumber, pageSize)
+        .then((resp) => {
+          console.log(resp);
+          SetPostContent({
+            contents: [...postContent.contents, ...resp.contents],
+            totalPages: resp.totalPages,
+            pageNumber: resp.pageNumber,
+            pageSize: resp.pageSize,
+            totalElements: resp.totalElements,
+            last: resp.last,
+          });
+          // window.scroll(0, 0);
+        })
+        .catch((error) => {
+          toast.error("Some error occurred whike loading Posts");
+        });
+    }
+
+    
+
+  const changePageInfinite = () => {
+    SetCurrentPage(postContent?.pageNumber + 1);
   };
 
   return (
     <>
-      <MDBRow className="row-cols-1 row-cols-md-4 g-4">
-        {postContent?.contents.map((post) => (
-          <Post post={post} key={post.id} />
-        ))}
-      </MDBRow>
+      <InfiniteScroll
+        dataLength={postContent?.contents?.length}
+        next={changePageInfinite}
+        hasMore={!postContent?.last}
+        loader={<h4>Loading.....</h4>}
+        endMessage={
+          <h3 style={{ textAlign: "center" }}>Yay! You have seen it all</h3>
+        }
+        
+      >
+        <h2 className="m-4 mb-4">Blog Counts({postContent?.totalElements})</h2>
+        <Row className="row-cols-md-3">
+          {postContent?.contents?.map(post => 
+            // <Post post={post} key={post?.id} />
+            <AnimatedCard post={post} key={ post?.id} />
+          )}
+        </Row>
+      </InfiniteScroll>
 
-      <Container className="text-center mt-3">
+      {/* <Container className="text-center mt-3">
         <Pagination size="lg">
           <PaginationItem
             onClick={() => pageChange(postContent.pageNumber-1)}
@@ -71,7 +95,7 @@ const Blogs = () => {
           </PaginationItem>
           {[...Array(postContent?.totalPages)].map((item, index) => (
             <PaginationItem
-              onClick={() => pageChange(index, 8)}
+              onClick={() => pageChange(index, PAGE_SIZE)}
               key={index}
               active={index == postContent?.pageNumber}
             >
@@ -87,7 +111,7 @@ const Blogs = () => {
             <PaginationLink next>Next</PaginationLink>
           </PaginationItem>
         </Pagination>
-      </Container>
+      </Container> */}
     </>
   );
 };

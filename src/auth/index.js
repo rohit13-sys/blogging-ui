@@ -1,3 +1,8 @@
+import { useContext } from "react";
+import userContext from "../context/userContext";
+
+
+
 export const isLoggedIn = () => {
   let data = localStorage.getItem("data");
   if (data == null) return false;
@@ -9,7 +14,9 @@ export const doLogin = (data,next) => {
     next();
 };
 
-export const doLogout = (next) => {
+export const DoLogout = (next) => {
+    
+   
     localStorage.removeItem("data");
     next();
 };

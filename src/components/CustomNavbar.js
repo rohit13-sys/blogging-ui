@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -15,11 +15,13 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { isLoggedIn, getCurrentUser, doLogout } from "../auth";
+import { isLoggedIn, getCurrentUser, DoLogout } from "../auth";
+import userContext from "../context/userContext";
 
 const CustomNavbar = () => {
 
   const navigate = useNavigate();
+  const userContextData = useContext(userContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const [login, setLogin] = useState(false);
@@ -32,9 +34,14 @@ const CustomNavbar = () => {
   }, [login]);
 
   const logout = () => {
-    doLogout(() => {
+    DoLogout(() => {
       setLogin(false);
-      navigate("/login");
+      userContextData.SetUser({
+        data: '',
+        login:false
+      })
+      // navigate("/login");
+      navigate("/blogs")
     });
     toast.success("User Logged Out Successfully");
   }

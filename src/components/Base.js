@@ -1,8 +1,13 @@
 import CustomNavbar from "./CustomNavbar";
 import { Container } from "reactstrap";
+import { useContext, useEffect,useState } from "react";
+import userContext from "../context/userContext";
 
 
-const Base = ({children }) => {
+
+const Base = ({ children }) => {
+  
+ 
     return (
       <>
        
@@ -10,6 +15,8 @@ const Base = ({children }) => {
           <CustomNavbar />
 
         <div className="mt-100">{children}</div>
+
+          
       </>
     );
 

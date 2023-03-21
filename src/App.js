@@ -23,6 +23,10 @@ import { useEffect } from 'react';
 import PostPage from './pages/PostPage';
 import ModalExample from './components/Popup';
 import Popup from './components/Popup';
+import UserProvider from './context/UserProvider';
+import Categories from './pages/Categories';
+import UpdatePost from './pages/UpdatePost';
+import AnimatedCard from './animated cards/AnimatedCard';
 
 
 function App() {
@@ -36,26 +40,32 @@ function App() {
 
 
   return (
-    <BrowserRouter>
-      <ToastContainer position="bottom-right" />
-      <Routes>
-        <Route path="/" element={<NewFeeds />} />
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<SignUp />} />
-        <Route path="about" element={<About />} />
-        <Route path="blogs" element={<NewFeeds />} />
-        <Route path="membership" element={<Membership />} />
-        <Route path="services" element={<Services />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="post/:postId" element={<PostPage />} />
-        <Route path="popup/:postId" element={<Popup />} />
+    <UserProvider>
+      <BrowserRouter>
+        <ToastContainer position="bottom-right" />
+        <Routes>
+          <Route path="/" element={<NewFeeds />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="about" element={<About />} />
+          <Route path="blogs" element={<NewFeeds />} />
+          <Route path="membership" element={<Membership />} />
+          <Route path="services" element={<Services />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="post/:postId" element={<PostPage />} />
+          <Route path="popup/:postId" element={<Popup />} />
+          <Route path="categories/:categoryId" element={<Categories />} />
+          <Route path="background" element={<AnimatedCard />} />
+         
 
-        <Route path="/user" element={<PrivateRoute />}>
-          <Route path="dashboard" element={<UserDashboard />} />
-          <Route path="profile-info" element={<ProfileInfo />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route path="/user" element={<PrivateRoute />}>
+            <Route path="dashboard" element={<UserDashboard />} />
+            <Route path="profile-info" element={<ProfileInfo />} />
+            <Route path="updatepost/:postId" element={<UpdatePost />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 

@@ -75,9 +75,6 @@ const PostPage = () => {
   return (
     <Base>
       <Container>
-        {JSON.stringify(user)}
-        {/* {post.user.id} */}
-
         <div className="mt-4">
           <Link to="/">Home</Link> / {post && <Link to="">{post.title}</Link>}
         </div>
@@ -96,7 +93,13 @@ const PostPage = () => {
               Added On : <b>{printDate(post.addedDate)}</b>
             </div>
           </CardHeader>
-
+          <CardImg
+            src={BASE_URL + "/posts/image/" + post?.id}
+            alt="No Image"
+            position="top"
+            className="p-3"
+            style={{maxWidth:'70%'}}
+          />
           <CardBody
             className="mt -3"
             style={{
@@ -117,8 +120,16 @@ const PostPage = () => {
               offset: 1,
             }}
           >
-            <Card>
-              <CardHeader style={{ backgroundColor: "aliceblue" }}>
+            <Card
+              style={{
+                border: "0px",
+              }}
+            >
+              <CardHeader
+                style={{
+                  backgroundColor: "ghostwhite",
+                }}
+              >
                 <h3>Comments</h3>
               </CardHeader>
               <ListGroup className="border-0">
@@ -144,7 +155,9 @@ const PostPage = () => {
                   type="textarea"
                   placeholder="Enter Comments here"
                   value={comment.content}
-                  onChange={(event) => SetComment({ 'content': event.target.value })}
+                  onChange={(event) =>
+                    SetComment({ content: event.target.value })
+                  }
                 />
 
                 <Button
