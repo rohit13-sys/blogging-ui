@@ -27,6 +27,7 @@ import UserProvider from './context/UserProvider';
 import Categories from './pages/Categories';
 import UpdatePost from './pages/UpdatePost';
 import AnimatedCard from './animated cards/AnimatedCard';
+import LikeButton from './components/like/LikeButton';
 
 
 function App() {
@@ -56,7 +57,7 @@ function App() {
           <Route path="popup/:postId" element={<Popup />} />
           <Route path="categories/:categoryId" element={<Categories />} />
           <Route path="background" element={<AnimatedCard />} />
-         
+          <Route path="like" element={<LikeButton />} />
 
           <Route path="/user" element={<PrivateRoute />}>
             <Route path="dashboard" element={<UserDashboard />} />

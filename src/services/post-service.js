@@ -74,3 +74,7 @@ export const updatePostById = (postId, post) => {
   console.log(post);
   return privateAxios.put(`/posts/update-posts/${postId}`,post).then(resp=>resp.data);
 }
+
+export const storeLikeCounts = (postId, likeCounts,dislikeCounts) => {
+  return privateAxios.put(`/posts/post/like/${postId}/${likeCounts}/${dislikeCounts}`).then(resp => resp.data);
+}
