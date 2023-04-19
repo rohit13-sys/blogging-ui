@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import userContext from "../context/userContext";
-
-
+import { BASE_URL, publicAxios } from "../services/helper";
 
 export const isLoggedIn = () => {
   let data = localStorage.getItem("data");
@@ -9,30 +8,39 @@ export const isLoggedIn = () => {
   else return true;
 };
 
-export const doLogin = (data,next) => {
-    localStorage.setItem("data", JSON.stringify(data));
-    next();
+export const doLogin = (data, next) => {
+  localStorage.setItem("data", JSON.stringify(data));
+  next();
 };
 
 export const DoLogout = (next) => {
-    
-   
-    localStorage.removeItem("data");
-    next();
+  localStorage.removeItem("data");
+  next();
 };
 
 export const getCurrentUser = () => {
-    if (isLoggedIn()) {
-        return JSON.parse(localStorage.getItem("data")).userDto;
-    } else {
-        return undefined;
-    }
-}
+  if (isLoggedIn()) {
+    return JSON.parse(localStorage.getItem("data")).userDto;
+  } else {
+    return undefined;
+  }
+};
 
 export const getToken = () => {
+  if (isLoggedIn()) {
+    return JSON.parse(localStorage.getItem("data")).token;
+  } else {
+    return null;
+  }
+};
+
+
+export const isTokenValid = (token) => {
+    console.log('api call '+token);
     if (isLoggedIn()) {
-        return (JSON.parse(localStorage.getItem("data")).token);
+        const token = `Bearer ${token}`;
+        return publicAxios.post(`${BASE_URL}/auth/validtoken`,token).then(resp=>resp.data);
     } else {
-        return null;
+        
     }
 }

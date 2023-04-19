@@ -1,6 +1,7 @@
 
 import styled from "@emotion/styled/macro";
-import { useEffect,useContext,useNavigate,useState } from "react";
+import { useEffect, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Col, Container, Row } from "reactstrap";
 import { BASE_URL } from "../services/helper";
 import { Link } from "react-router-dom";
@@ -79,6 +80,7 @@ const Background = styled.div({
 const AnimatedCard = (post) => {
 
   const userContextData = useContext(userContext);
+  const navigate = useNavigate();
   const [user, SetUser] = useState(null);
   const [logged, SetLogged] = useState(null);
   const [imageUrl, SetImageUrl] = useState({
@@ -104,14 +106,25 @@ const AnimatedCard = (post) => {
         window.location.reload(true);
       })
       .catch((error) => {
-        console.log(error.response.status);
+        console.log(error?.response?.status);
         // DoLogout();
-        // userContextData.SetUSer({
+        // userContextData.SetUser({
         //   data: {},
         //   login: false,
         // });
         // window.location.reload(true);
         // toast.error("Please Login!!!");
+        DoLogout(() => {
+          userContextData.SetUser({
+            data: "",
+            login: false,
+          });
+          // navigate("/login");
+          // window.location.reload(true);
+          navigate("/login");
+          toast.error("Please Login!!!");
+
+        });
       });
   };
 

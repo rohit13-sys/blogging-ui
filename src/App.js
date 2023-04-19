@@ -32,12 +32,12 @@ import LikeButton from './components/like/LikeButton';
 
 function App() {
 
-  // useEffect(() => {
-  //   const token = JSON.parse(localStorage.getItem('data')).token;
-  //   console.log(token);
-  //   const decodedToken = jwtDecode(token);
-  //   console.log(token);
-  // },[ ]);
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('data')).token;
+    console.log(token);
+    const decodedToken = jwtDecode(token);
+    console.log(token);
+  },[]);
 
 
   return (
