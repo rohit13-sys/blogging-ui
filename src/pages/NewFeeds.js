@@ -13,23 +13,23 @@ const NewFeeds = () => {
 
   const userContextData = useContext(userContext);
   const [user, SetUser] = useState(null);
-  useEffect(() => {
-    const token = JSON.parse(localStorage.getItem('data')).token;
-    console.log(token);
-    isTokenValid(token).then((result) => {
+  // useEffect(() => {
+  //   const token = JSON.parse(localStorage.getItem('data')).token;
+  //   console.log(token);
+  //   isTokenValid(token).then((result) => {
       
-    }).catch((err) => {
-      DoLogout(() => {
-        userContextData.SetUser({
-          data: "",
-          login: false,
-        });
+  //   }).catch((err) => {
+  //     DoLogout(() => {
+  //       userContextData.SetUser({
+  //         data: "",
+  //         login: false,
+  //       });
         
-        window.location.reload(true);
+  //       window.location.reload(true);
       
-      });
-    });
-  },[])
+  //     });
+  //   });
+  // },[])
    
     return (
       <Base style={{ overflow: "hidden" }}>
