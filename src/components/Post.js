@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import { DoLogout, getCurrentUser, isLoggedIn } from "../auth";
 import { BASE_URL } from "../services/helper";
-import { deletePostById } from "../services/post-service";
+import { deletePostById, updatePostById } from "../services/post-service";
 import { Navigate } from "react-router-dom";
 import userContext from "../context/userContext";
 import { MDBRipple } from "mdb-react-ui-kit";
@@ -48,23 +48,23 @@ const Post = (post) => {
   };
 
 
-  // const updatePost = (post) => {
-  //   deletePostById(post?.id)
-  //     .then((resp) => {
-  //       toast.success("Post Deleted Successfully");
-  //       window.location.reload(true);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error.response.status);
-  //       doLogout();
-  //       userContextData.SetUSer({
-  //         data: {},
-  //         login: false,
-  //       });
-  //       window.location.reload(true);
-  //       toast.error("Please Login!!!");
-  //     });
-  // };
+  const updatePost = (post) => {
+    console.log(post);
+    updatePostById(post?.id)
+      .then((resp) => {
+        toast.success("Post Deleted Successfully");
+        window.location.reload(true);
+      })
+      .catch((error) => {
+        console.log(error.response.status);
+        userContextData.SetUSer({
+          data: {},
+          login: false,
+        });
+        window.location.reload(true);
+        toast.error("Please Login!!!");
+      });
+  };
 
   return (
     <>

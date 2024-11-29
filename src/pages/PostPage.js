@@ -94,8 +94,8 @@ const PostPage = () => {
       console.log("likes : " + likeCount);
       console.log("dislikes : " + dislikeCount);
       if (isLoggedIn()) {
-        storeLikeCounts(postId, likeCount, dislikeCount)
-          .then((resp) => {
+        // storeLikeCounts(postId, likeCount, dislikeCount)
+        //   .then((resp) => {
             getPostById(postId)
               .then((resp) => {
                 SetPost(resp);
@@ -103,13 +103,15 @@ const PostPage = () => {
               .catch((error) => {
                 toast.error("Error while Loading Post");
               });
-          })
-          .catch((error) =>
-            toast.error("something wrong occurred while like in post")
-          );
+          // })
+          // .catch((error) =>
+          //   toast.error("something wrong occurred while like in post")
+          // );
       }
     }
-  }, [likeCount,dislikeCount]);
+  }
+  , [likeCount,dislikeCount]
+  );
 
   // const handleClick = () => {
   //   console.log("hiiii");

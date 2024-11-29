@@ -7,11 +7,10 @@ import {
   MDBCardText,
   MDBCardBody,
   MDBCardImage,
-  MDBBtn,
   MDBTypography,
 } from "mdb-react-ui-kit";
 import Base from "../../components/Base";
-import { Button, Container } from "reactstrap";
+import { Container } from "reactstrap";
 import "./ProfileInfo.css";
 import userContext from "../../context/userContext";
 
@@ -22,7 +21,7 @@ export default function ProfileInfo() {
   useEffect(() => {
     SetUser(obj);
     console.log(obj);
-  }, []);
+},[user]);
 
   const userView = () => {
     return (
@@ -75,9 +74,7 @@ export default function ProfileInfo() {
                       <MDBCardText className="font-italic mb-1">
                         {user?.user?.data?.roles?.map((role) => {
                           return (
-                            <>
-                              <p key={role?.id}>{role?.name}</p>
-                            </>
+                              <p key={role?.id}>{role?.name.replace("ROLE_","")}</p>
                           );
                         })}
                         {/* {user?.user?.data} */}

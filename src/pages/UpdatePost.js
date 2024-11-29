@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import Base from "../components/Base";
 import userContext from "../context/userContext";
-import { getPostById, updatePostById } from "../services/post-service";
+import { getPostById, updatePostById, uploadPostImage } from "../services/post-service";
 import { loadAllCategory } from "../services/category-service";
 import JoditEditor from "jodit-react";
 import { BASE_URL } from "../services/helper";
@@ -20,7 +20,6 @@ import {
   Row,
   CardImg,
 } from "reactstrap";
-import { DoLogout } from "../auth";
 
 function UpdatePost() {
   const { postId } = useParams();
@@ -53,6 +52,9 @@ function UpdatePost() {
 
   const updatePost = (event) => {
     event.preventDefault();
+    console.log(image.name,"image")
+    post.imageName = image.name;
+    console.log(post,"post")
     updatePostById(postId, { ...post, category: { id: post.categoryId } })
       .then((resp) => {
         toast.success("Post Updated Successfully");
@@ -61,6 +63,12 @@ function UpdatePost() {
       .catch((error) => {
         console.log(error);
       });
+
+      if(image.name!==undefined){
+        uploadPostImage(postId,image).then((resp)=>{
+          console.log(resp);
+        })
+      }
   };
 
   useEffect(() => {
@@ -77,7 +85,7 @@ function UpdatePost() {
     getPostById(postId)
       .then((resp) => {
         SetPost({ ...resp, categoryId: resp.category.id });
-        if (post?.user?.id == object?.user?.data.id) {
+        if (post?.user?.id === object?.user?.data.id) {
           navigate("/");
         }
       })
@@ -96,10 +104,11 @@ function UpdatePost() {
   //   }
   // }, [post]);
 
-  const handleChange = (event, fieldName) => {
+  const handleChange = (e, fieldName) => {
+    console.log("data",e)
     SetPost({
       ...post,
-      [fieldName]: event.target.value,
+      [fieldName]: e.target.value,
     });
   };
 
@@ -137,8 +146,8 @@ function UpdatePost() {
                       type="text"
                       id="title"
                       placeholder="Enter Here"
-                      onChange={(event) => {
-                        handleChange(event, "title");
+                      onChange={() => {
+                        handleChange("title");
                       }}
                       name="title"
                       maxLength={"40"}
@@ -199,7 +208,7 @@ function UpdatePost() {
                       }}
                       value={post?.categoryId}
                     >
-                      <option>Select Option</option>
+                      <option value=''>Select Option</option>
                       {categories.map((category) => {
                         return (
                           <option

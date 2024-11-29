@@ -12,7 +12,6 @@ export const getAllPosts = (pageNumber, pageSize) => {
   return publicAxios
     .get(`/posts/all-posts?pageNo=${pageNumber}&pageSize=${pageSize}`)
     .then((resp) => {
-      console.log(resp.data);
       return resp.data
     });
 };
@@ -60,14 +59,12 @@ export const deletePostById = (postId) => {
   return privateAxios
     .delete(`/posts/delete-posts/${postId}`)
     .then((resp) => {
-      if (resp.status == '401') {
+      if (resp.status === '401') {
         console.log("UNAUTHORIZED");
       }
       return resp;
     });
 };
-
-
 
 export const updatePostById = (postId, post) => {
   console.log(postId);

@@ -2,7 +2,7 @@
 import styled from "@emotion/styled/macro";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Col, Container, Row } from "reactstrap";
+import { Col } from "reactstrap";
 import { BASE_URL } from "../services/helper";
 import { Link } from "react-router-dom";
 import userContext from "../context/userContext";
@@ -78,7 +78,6 @@ const Background = styled.div({
 });
 
 const AnimatedCard = (post) => {
-
   const userContextData = useContext(userContext);
   const navigate = useNavigate();
   const [user, SetUser] = useState(null);
@@ -154,7 +153,7 @@ const AnimatedCard = (post) => {
                 </Link>
 
                 {userContextData?.user?.login ? (
-                  user?.id == post?.post?.user.id ? (
+                  user?.id === post?.post?.user.id ? (
                     <Link
                       className="btn btn-outline-danger ms-3"
                       onClick={() => deletePost(post?.post)}
@@ -169,7 +168,7 @@ const AnimatedCard = (post) => {
                 )}
 
                 {userContextData?.user?.login ? (
-                  user?.id == post?.post?.user.id ? (
+                  user?.id === post?.post?.user.id ? (
                     <Link
                       className="btn btn-outline-warning m-3"
                       to={`/user/updatepost/${post?.post?.id}`}

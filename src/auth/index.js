@@ -26,6 +26,14 @@ export const getCurrentUser = () => {
   }
 };
 
+export const getCurrentRole = () =>{
+  if (isLoggedIn()) {
+    return JSON.parse(localStorage.getItem("data")).userDto.roles[0];
+  } else {
+    return undefined;
+  }
+}
+
 export const getToken = () => {
   if (isLoggedIn()) {
     return JSON.parse(localStorage.getItem("data")).token;
