@@ -48,12 +48,17 @@ function UpdatePost() {
 
   const handleFileChange = (event) => {
     SetImage(event.target.files[0]);
+    if (event.target.files.length > 0) {
+      SetImage(event.target.files[0]);
+    } else {
+      SetImage(null);
+    }
   };
 
   const updatePost = (event) => {
     event.preventDefault();
-    console.log(image.name,"image")
-    post.imageName = image.name;
+    console.log(image?.name,"image")
+    post.imageName = image?.name;
     console.log(post,"post")
     updatePostById(postId, { ...post, category: { id: post.categoryId } })
       .then((resp) => {
@@ -64,7 +69,7 @@ function UpdatePost() {
         console.log(error);
       });
 
-      if(image.name!==undefined){
+      if(image?.name!==undefined){
         uploadPostImage(postId,image).then((resp)=>{
           console.log(resp);
         })
@@ -104,11 +109,10 @@ function UpdatePost() {
   //   }
   // }, [post]);
 
-  const handleChange = (e, fieldName) => {
-    console.log("data",e)
+  const handleChange = (event, fieldName) => {
     SetPost({
       ...post,
-      [fieldName]: e.target.value,
+      [fieldName]: event.target.value,
     });
   };
 
@@ -146,8 +150,8 @@ function UpdatePost() {
                       type="text"
                       id="title"
                       placeholder="Enter Here"
-                      onChange={() => {
-                        handleChange("title");
+                      onChange={(event) => {
+                        handleChange(event,"title");
                       }}
                       name="title"
                       maxLength={"40"}

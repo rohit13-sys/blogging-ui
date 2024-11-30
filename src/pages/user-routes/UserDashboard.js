@@ -42,7 +42,7 @@ const UserDashboard = () => {
 
 
    const pageChange = (pageNumber = 0, pageSize = PAGE_SIZE) => {
-     loadPostByUser(JSON.stringify(getCurrentUser().id),pageNumber, pageSize)
+     loadPostByUser(getCurrentUser().id,pageNumber, pageSize)
        .then((resp) => {
          console.log(resp);
          SetPostContent({

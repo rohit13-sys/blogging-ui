@@ -52,7 +52,7 @@ const Blogs = () => {
           // window.scroll(0, 0);
         })
         .catch((error) => {
-          toast.error("Some error occurred whike loading Posts");
+          toast.error("Some error occurred while loading Posts");
         });
     }
 
